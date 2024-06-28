@@ -1,4 +1,6 @@
-const Controller = require('../../common/controller');
+// controller
+const Controller = require('../../common/controllers/controller');
+// jwt
 const jwt = require("jsonwebtoken");
 
 class JwtController extends Controller {
@@ -8,7 +10,7 @@ class JwtController extends Controller {
 
     async generateNewToken(payload, next) {
         try {
-            return await jwt.sign({ payload }, process.env.JWT_SECRET, { expiresIn: 60 * 60 });
+            return await jwt.sign({ payload }, process.env.JWT_SECRET, { expiresIn: 60 * 60 * 1000 });
         } catch (error) {
             next(error);
         }

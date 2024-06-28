@@ -10,6 +10,8 @@ const { default: mongoose } = require("mongoose");
 const { allRoutes } = require("./routes/router");
 // swagger
 const SwaggerConfig = require("./config/swagger.config")
+// cookie parser
+const cookieParser = require('cookie-parser')
 // config env files on application
 dotenv.config();
 
@@ -22,6 +24,7 @@ class Application {
         this.createServer();
         this.connectToDB();
         this.configServer();
+        this.initClientSession();
         this.configRoutes();
         this.errorHandling();
     }
@@ -46,6 +49,9 @@ class Application {
     }
     configRoutes() {
         this.#app.use("/api", allRoutes);
+    }
+    initClientSession() {
+        this.#app.use(cookieParser(process.env.COOKIE_PARSER_SECRET));
     }
     errorHandling() {
         this.#app.use((req, res, next) => {

@@ -1,10 +1,12 @@
-const Controller = require('../../common/controller')
+const Controller = require('../../common/controllers/controller')
 // model
 const { userModel } = require('./user.model')
 // error handling
 const createError = require("http-errors");
 // jwt
-const { JwtController } = require("../jwt/jwt.controller")
+const { JwtController } = require("../jwt/jwt.controller");
+// constants
+const NodeEnv = require('../../common/constants/env.enum');
 
 class UserController extends Controller {
     #model
@@ -26,7 +28,7 @@ class UserController extends Controller {
             // set token on cookie
             const token = await JwtController.generateNewToken(email, next);
             // set token on cookie
-            res.cookie('blog_jwt', token, { maxAge: 60 * 60 });
+            res.cookie('blog_jwt', token, { maxAge: 60 * 60 * 1000, httpOnly: true, secure: process.env.NODE_ENV === NodeEnv.Production });
             // response
             res.status(200).json({
                 statusCode: res.statusCode,

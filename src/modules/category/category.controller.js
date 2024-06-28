@@ -1,4 +1,4 @@
-const Controller = require('../../common/controller')
+const Controller = require('../../common/controllers/controller')
 // model
 const { categoryModel } = require('./category.model')
 // error handling
