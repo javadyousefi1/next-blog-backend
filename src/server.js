@@ -8,6 +8,8 @@ const dotenv = require("dotenv");
 const { default: mongoose } = require("mongoose");
 // routes
 const { allRoutes } = require("./routes/router");
+// swagger
+const SwaggerConfig = require("./config/swagger.config")
 // config env files on application
 dotenv.config();
 
@@ -40,6 +42,7 @@ class Application {
         );
         this.#app.use(express.json());
         this.#app.use(express.urlencoded({ extended: true }));
+        SwaggerConfig(this.#app)
     }
     configRoutes() {
         this.#app.use("/api", allRoutes);
@@ -56,7 +59,7 @@ class Application {
                 statusCode,
                 message,
             });
-        }); 
+        });
     }
 }
 
