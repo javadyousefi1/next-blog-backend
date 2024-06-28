@@ -1,30 +1,37 @@
 const Controller = require('../../common/controller')
 // model
-const { categoryModel } = require('./category.model')
+const { userModel } = require('./user.model')
 // error handling
 const createError = require("http-errors");
+// jwt
+const { JwtController } = require("../jwt/jwt.controller")
 
-class CategoryController extends Controller {
+class UserController extends Controller {
     #model
     constructor() {
         super()
-        this.#model = categoryModel
+        this.#model = userModel
     }
 
-    async addNewCategory(req, res, next) {
+    async registerUser(req, res, next) {
         try {
             // get data from body
-            const { title, } = req.body;
-            const newCategory = { title };
+            const { name, email, password } = req.body;
+            const newUser = { name, email, password };
             // check dublicate
-            const isAlreadyExist = await this.#model.countDocuments({ title: title.trim() })
-            if (isAlreadyExist) throw new createError.BadRequest("this category already exists !")
+            const isAlreadyExist = await this.#model.countDocuments({ email: email.trim() })
+            if (isAlreadyExist) throw new createError.BadRequest("this user with this email already exists !")
             // insert new category to DB
-            const newCategoryCreated = await this.#model.create(newCategory);
+            const newUserCreated = await this.#model.create(newUser);
+            // set token on cookie
+            const token = await JwtController.generateNewToken(email, next);
+            // set token on cookie
+            res.cookie('blog_jwt', token, { maxAge: 60 * 60 });
+            // response
             res.status(200).json({
                 statusCode: res.statusCode,
-                message: "Category added successfully",
-                data: newCategoryCreated
+                message: "you registered succsefully",
+                data: newUserCreated
             })
         } catch (error) {
             next(error)
@@ -63,7 +70,7 @@ class CategoryController extends Controller {
 
     async deleteCategory(req, res, next) {
         const { id } = req.query;
-        if (!id) throw new createError.BadRequest("you dont sent id !")
+        if (!id) next(createError.BadRequest("you dont sent id !"))
         try {
             const Categorys = await this.#model.deleteOne({ _id: id });
             res.status(200).json({
@@ -78,4 +85,4 @@ class CategoryController extends Controller {
 }
 
 
-module.exports = { CategoryController: new CategoryController() }
+module.exports = { UserController: new UserController() }
