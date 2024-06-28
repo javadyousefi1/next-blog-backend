@@ -21,6 +21,23 @@
 
 /**
  * @swagger
+ *  components:
+ *      schemas:
+ *          UpdateCategory:
+ *              type: object
+ *              required:
+ *                  -   id
+ *                  -   title
+ *                  -   icon
+ *              properties:
+ *                  id:
+ *                      type: string
+ *                  title:
+ *                      type: string
+ */
+
+/**
+ * @swagger
  * /api/category/create-category:
  *  post:
  *      summary: create new category
@@ -31,6 +48,22 @@
  *              application/json:
  *                  schema:
  *                      $ref: '#/components/schemas/CreateCategory'
+ *      responses:
+ *          201: 
+ *              description: created
+ */
+/**
+ * @swagger
+ * /api/category/update-category:
+ *  put:
+ *      summary: update category
+ *      tags:
+ *          -   Category
+ *      requestBody:
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      $ref: '#/components/schemas/UpdateCategory'
  *      responses:
  *          201: 
  *              description: created

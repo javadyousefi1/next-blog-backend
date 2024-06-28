@@ -14,8 +14,8 @@ class CategoryController extends Controller {
     async addNewCategory(req, res, next) {
         try {
             // get data from body
-            const { title, text } = req.body;
-            const newCategory = { text, title };
+            const { title, } = req.body;
+            const newCategory = { title };
             // check dublicate
             const isAlreadyExist = await this.#model.countDocuments({ title: title.trim() })
             if (isAlreadyExist) next(createError.BadRequest("this category already exists !"))
@@ -24,6 +24,23 @@ class CategoryController extends Controller {
             res.status(200).json({
                 statusCode: res.statusCode,
                 message: "Category added successfully",
+                data: newCategoryCreated
+            })
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    async updateCategory(req, res, next) {
+        try {
+            // get data from body
+            const { title, id } = req.body;
+            const updatedCategory = { title, _id: id };
+            // update category from DB
+            const newCategoryCreated = await this.#model.updateOne(updatedCategory);
+            res.status(200).json({
+                statusCode: res.statusCode,
+                message: "Category updated successfully",
                 data: newCategoryCreated
             })
         } catch (error) {
