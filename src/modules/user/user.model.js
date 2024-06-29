@@ -5,6 +5,7 @@ const userSchema = new Schema({
     email: { type: String, required: true, trim: true },
     password: { type: String, required: true, trim: true },
     isVerify: { type: Boolean, default: false },
+    role: { type: String, default: "user" },
 }, { timestamps: true, versionKey: false })
 
 const userModel = model("user", userSchema)
