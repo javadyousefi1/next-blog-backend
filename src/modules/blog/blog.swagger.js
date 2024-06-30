@@ -1,88 +1,91 @@
 /**
  * @swagger
  * tags:
- *  name: Category
- *  description: Category Module and Routes
+ *  name: Blog
+ *  description: Blog Module and Routes
  */
 
 /**
  * @swagger
  *  components:
  *      schemas:
- *          CreateCategory:
+ *          CreateBlog:
  *              type: object
  *              required:
  *                  -   title
+ *                  -   categoryId
+ *                  -   text
  *                  -   icon
  *              properties:
  *                  title:
+ *                      type: string
+ *                  categoryId:
+ *                      type: string
+ *                  text:
+ *                      type: string
+ *          AddComment:
+ *              type: object
+ *              required:
+ *                  -   blogId
+ *                  -   comment
+ *                  -   icon
+ *              properties:
+ *                  blogId:
+ *                      type: string
+ *                  comment:
  *                      type: string
  */
 
 /**
  * @swagger
- *  components:
- *      schemas:
- *          UpdateCategory:
- *              type: object
- *              required:
- *                  -   title
- *                  -   icon
- *              properties:
- *                  title:
- *                      type: string
- */
-
-/**
- * @swagger
- * /api/category/create-category:
+ * /api/blog/create-blog:
  *  post:
- *      summary: create new category
+ *      summary: create new blog
  *      tags:
- *          -   Category
+ *          -   Blog
  *      requestBody:
  *          content:
  *              application/json:
  *                  schema:
- *                      $ref: '#/components/schemas/CreateCategory'
+ *                      $ref: '#/components/schemas/CreateBlog'
  *      responses:
  *          201: 
  *              description: created
  */
 /**
  * @swagger
- * /api/category/update-category:
- *  put:
- *      summary: update category
+ * /api/blog/add-comment:
+ *  post:
+ *      summary: add comment on blog
  *      tags:
- *          -   Category
+ *          -   Blog
  *      requestBody:
  *          content:
  *              application/json:
  *                  schema:
- *                      $ref: '#/components/schemas/UpdateCategory'
+ *                      $ref: '#/components/schemas/AddComment'
  *      responses:
  *          201: 
- *              description: created
+ *              description: created a comment
  */
 /**
  * @swagger
- * /api/category/get-all-categories:
+ * /api/blog/get-all-blogs:
  *  get:
- *      summary: get all categories
+ *      summary: get all blogs
  *      tags:
- *          -   Category
+ *          -   Blog
  *      responses:
  *          200: 
  *              description: successfully
  */
 /**
  * @swagger
- * /api/category/delete-category:
+ * /api/blog/delete-blog:
  *  delete:
- *      summary: delete catergory
+ *      summary: delete blog
  *      tags:
- *          -   Category
+ *          -   Blog
  *      parameters:
  *          -   in: query
  *              required: true

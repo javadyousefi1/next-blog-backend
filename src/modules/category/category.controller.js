@@ -1,3 +1,4 @@
+const { isValidObjectId } = require('mongoose');
 const Controller = require('../../common/controllers/controller')
 // model
 const { categoryModel } = require('./category.model')
@@ -71,6 +72,16 @@ class CategoryController extends Controller {
                 message: "Category deleted successfully",
                 data: Categorys._id
             })
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    async isCategoryidAlreadyExistsById(id, next = () => { }) {
+        try {
+            if (!isValidObjectId(id)) throw new createError.BadRequest("your category id is not valid")
+            const foundBlog = await this.#model.countDocuments({ _id: id })
+            if (!foundBlog) throw new createError.NotFound("not found a category with this id !")
         } catch (error) {
             next(error)
         }
