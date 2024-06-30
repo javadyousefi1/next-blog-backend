@@ -15,6 +15,7 @@
  *                  -   title
  *                  -   categoryId
  *                  -   text
+ *                  -   tags
  *                  -   icon
  *              properties:
  *                  title:
@@ -23,6 +24,10 @@
  *                      type: string
  *                  text:
  *                      type: string
+ *                  tags:
+ *                      type: array
+ *                      items:
+ *                          type: string
  *          AddComment:
  *              type: object
  *              required:

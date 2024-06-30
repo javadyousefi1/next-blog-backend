@@ -19,8 +19,8 @@ class BlogController extends Controller {
 
     async addNewBlog(req, res, next) {
         try {
-            const { title, text, categoryId } = req.body;
-            const newBlog = { text, title, categoryId };
+            const { title, text, categoryId, tags } = req.body;
+            const newBlog = { text, title, categoryId, tags };
             // check category id is valid or not
             await this.#CategoryController.isCategoryidAlreadyExistsById(categoryId, next)
             // prevent dublicate blogs
