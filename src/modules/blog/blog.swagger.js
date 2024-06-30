@@ -16,10 +16,13 @@
  *                  -   categoryId
  *                  -   text
  *                  -   tags
+ *                  -   readingDuration
  *                  -   icon
  *              properties:
  *                  title:
  *                      type: string
+ *                  readingDuration:
+ *                      type: number
  *                  categoryId:
  *                      type: string
  *                  text:
