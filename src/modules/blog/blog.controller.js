@@ -83,7 +83,7 @@ class BlogController extends Controller {
         try {
             const { blogId, comment } = req.body
             await this.isBLogidAlreadyExistsById(blogId, next)
-            const updateBlogComment = await this.#model.updateOne({ _id: blogId }, { $push: { comments: { comment: comment, _id: new mongoose.Types.ObjectId(), isChecked: false, userId: req.user._id } } })
+            await this.#model.updateOne({ _id: blogId }, { $push: { comments: { comment: comment, _id: new mongoose.Types.ObjectId(), isChecked: false, userId: req.user._id } } })
             res.status(200).json({
                 statusCode: res.statusCode,
                 message: "comment added successfully !"

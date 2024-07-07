@@ -7,7 +7,15 @@ const blogSchema = new Schema({
     readingDuration: { type: Number, required: true, trim: true },
     tags: { type: [String], required: true, trim: true },
     likes: { type: [String], required: false, trim: true, default: [] },
-    comments: { type: [Object], required: false, default: [] }
+    comments: {
+        type: [
+            {
+                comment: { type: String },
+                isChecked: { type: Boolean },
+                userId: { type: String },
+            }
+        ], required: false, default: []
+    }
 }, { timestamps: true, versionKey: false })
 
 const blogModel = model("blog", blogSchema)
