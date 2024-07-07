@@ -15,6 +15,7 @@ async function isAuthorized(req, res, next) {
         // check email is in user model or not
         if ("email" in tokenData) {
             const userData = await userModel.findOne({ email: tokenData.email })
+            req.user = userData
             return next()
         }
         throw new createError.Unauthorized("user not authorized !")
