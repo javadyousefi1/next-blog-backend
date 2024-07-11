@@ -42,6 +42,31 @@
  *                      type: string
  *                  comment:
  *                      type: string
+ *          ReplyComment:
+ *              type: object
+ *              required:
+ *                  -   blogId
+ *                  -   commentId
+ *                  -   reply
+ *                  -   icon
+ *              properties:
+ *                  blogId:
+ *                      type: string
+ *                  commentId:
+ *                      type: string
+ *                  reply:
+ *                      type: string
+ *          VerifyComment:
+ *              type: object
+ *              required:
+ *                  -   blogId
+ *                  -   commentId
+ *                  -   icon
+ *              properties:
+ *                  blogId:
+ *                      type: string
+ *                  commentId:
+ *                      type: string
  */
 
 /**
@@ -75,6 +100,38 @@
  *      responses:
  *          201: 
  *              description: created a comment
+ */
+/**
+ * @swagger
+ * /api/blog/reply-comment:
+ *  post:
+ *      summary: reply comment on blog
+ *      tags:
+ *          -   Blog
+ *      requestBody:
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      $ref: '#/components/schemas/ReplyComment'
+ *      responses:
+ *          201: 
+ *              description: reply a comment
+ */
+/**
+ * @swagger
+ * /api/blog/verify-comment:
+ *  post:
+ *      summary: verify comment on blog
+ *      tags:
+ *          -   Blog
+ *      requestBody:
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      $ref: '#/components/schemas/VerifyComment'
+ *      responses:
+ *          201: 
+ *              description: verify a comment
  */
 /**
  * @swagger
