@@ -28,8 +28,6 @@ class Application {
         this.createServer();
         this.connectToDB();
         this.initClientSession();
-        this.configRoutes();
-        this.errorHandling();
         this.configServer();
     }
     createServer() {
@@ -49,11 +47,27 @@ class Application {
         );
         this.#app.use(express.json());
         this.#app.use(express.urlencoded({ extended: true }));
-        this.#app.use("/uploads", express.static(path.join(__dirname, '../uploads')));
-        app.use("/uploads", serveIndex("../uploads", { icons: true }));
 
-        SwaggerConfig(this.#app)
+        const uploadsPath = path.join(__dirname, '../uploads');
+
+        // Check if path exists and log
+        const fs = require('fs');
+        if (fs.existsSync(uploadsPath)) {
+            console.log("Uploads path exists.");
+        } else {
+            console.log("Uploads path does not exist.");
+            fs.mkdirSync(uploadsPath, { recursive: true });
+        }
+
+        this.#app.use("/uploads", express.static(uploadsPath));
+        this.#app.use('/uploads', serveIndex(uploadsPath, { icons: true }));
+
+        SwaggerConfig(this.#app);
+        this.configRoutes();
+        this.errorHandling();
     }
+
+
     configRoutes() {
         this.#app.use("/api", allRoutes);
     }
