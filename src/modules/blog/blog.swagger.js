@@ -4,6 +4,18 @@
  *  name: Blog
  *  description: Blog Module and Routes
  */
+/**
+ * @swagger
+ * tags:
+ *  name: BlogComments
+ *  description: BlogComments Module and Routes
+ */
+/**
+ * @swagger
+ * tags:
+ *  name: BlogLikes
+ *  description: BlogLikes Module and Routes
+ */
 
 /**
  * @swagger
@@ -75,6 +87,17 @@
  *                      type: string
  *                  commentId:
  *                      type: string
+ *          DeleteComment:
+ *              type: object
+ *              required:
+ *                  -   blogId
+ *                  -   commentId
+ *                  -   icon
+ *              properties:
+ *                  blogId:
+ *                      type: string
+ *                  commentId:
+ *                      type: string
  */
 
 /**
@@ -99,7 +122,7 @@
  *  post:
  *      summary: like or unlike blog
  *      tags:
- *          -   Blog
+ *          -   BlogLikes
  *      requestBody:
  *          content:
  *              application/json:
@@ -115,7 +138,7 @@
  *  post:
  *      summary: add comment on blog
  *      tags:
- *          -   Blog
+ *          -   BlogComments
  *      requestBody:
  *          content:
  *              application/json:
@@ -131,7 +154,7 @@
  *  post:
  *      summary: reply comment on blog
  *      tags:
- *          -   Blog
+ *          -   BlogComments
  *      requestBody:
  *          content:
  *              application/json:
@@ -147,7 +170,7 @@
  *  post:
  *      summary: verify comment on blog
  *      tags:
- *          -   Blog
+ *          -   BlogComments
  *      requestBody:
  *          content:
  *              application/json:
@@ -156,6 +179,24 @@
  *      responses:
  *          201: 
  *              description: verify a comment
+ */
+/**
+ * @swagger
+ * /api/blog/delete-comment:
+ *  delete:
+ *      summary: delete comment on blog
+ *      tags:
+ *          -   BlogComments
+ *      parameters:
+ *          -   in: query
+ *              required: true
+ *              name: blogId
+ *          -   in: query
+ *              required: true
+ *              name: commentId
+ *      responses:
+ *          201: 
+ *              description: delete a comment
  */
 /**
  * @swagger

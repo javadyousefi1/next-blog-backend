@@ -131,6 +131,31 @@ class BlogController extends Controller {
         }
     }
 
+    async deleteComment(req, res, next) {
+        try {
+            const { blogId, commentId } = req.query
+            await this.isBLogidAlreadyExistsById(blogId, next)
+
+            const result = await this.#model.updateOne(
+                { _id: blogId },
+                { $pull: { comments: { _id: commentId } } }
+            );
+
+            if (result.matchedCount === 0) {
+                throw new createError.NotFound('Comment not found')
+            }
+
+            res.status(200).json({
+                statusCode: res.statusCode,
+                message: 'Comment removed successfully'
+            })
+
+
+        } catch (error) {
+            next(error)
+        }
+    }
+
     // like
     async likeBLog(req, res, next) {
         try {
