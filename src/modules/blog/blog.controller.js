@@ -86,7 +86,7 @@ class BlogController extends Controller {
             const updateBlogComment = await this.#model.updateOne({ _id: blogId }, { $push: { comments: { comment: comment, _id: new mongoose.Types.ObjectId(), isChecked: false, reply: null } } })
             res.status(200).json({
                 statusCode: res.statusCode,
-                message: "blog added successfully !"
+                message: "comment added successfully !"
             })
         } catch (error) {
             next(error)
