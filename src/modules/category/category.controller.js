@@ -15,10 +15,10 @@ class CategoryController extends Controller {
     async addNewCategory(req, res, next) {
         try {
             // get data from body
-            const { title, } = req.body;
-            const newCategory = { title };
+            const { title, svgIcon } = req.body;
+            const newCategory = { title, svgIcon };
             // check dublicate
-            const isAlreadyExist = await this.#model.countDocuments({ title: title.trim() })
+            const isAlreadyExist = await this.#model.countDocuments({ title: title.trim(), svgIcon })
             if (isAlreadyExist) throw new createError.BadRequest("this category already exists !")
             // insert new category to DB
             const newCategoryCreated = await this.#model.create(newCategory);

@@ -13,9 +13,12 @@
  *              type: object
  *              required:
  *                  -   title
+ *                  -   svgIcon
  *                  -   icon
  *              properties:
  *                  title:
+ *                      type: string
+ *                  svgIcon:
  *                      type: string
  */
 
@@ -26,10 +29,15 @@
  *          UpdateCategory:
  *              type: object
  *              required:
+ *                  -   id
  *                  -   title
- *                  -   icon
+ *                  -   svgIcon
  *              properties:
+ *                  id:
+ *                      type: string
  *                  title:
+ *                      type: string
+ *                  svgIcon:
  *                      type: string
  */
 

@@ -48,7 +48,7 @@ class BlogController extends Controller {
 
     async getAllBlogs(req, res, next) {
         try {
-            const blogs = await this.#model.find({});
+            const blogs = await this.#model.find({}).populate('categoryId', 'title');;
             res.status(200).json({
                 statusCode: res.statusCode,
                 message: "all blog resived successfully",
