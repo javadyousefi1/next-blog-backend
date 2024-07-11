@@ -20,7 +20,15 @@ class BlogController extends Controller {
     async addNewBlog(req, res, next) {
         try {
             const { title, text, categoryId, tags, readingDuration, } = req.body;
-            const newBlog = { text, title, categoryId, tags, readingDuration };
+
+            if (!req.file) {
+                throw new createError.BadRequest('A file is required for this operation')
+            }
+
+            const fileUrl = `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`;
+
+
+            const newBlog = { text, title, categoryId, tags, readingDuration, image: fileUrl };
             // check category id is valid or not
             await this.#CategoryController.isCategoryidAlreadyExistsById(categoryId, next)
             // prevent dublicate blogs
@@ -187,6 +195,10 @@ class BlogController extends Controller {
         } catch (error) {
             next(error)
         }
+    }
+
+    async test(req, res) {
+        res.send("ok")
     }
 }
 

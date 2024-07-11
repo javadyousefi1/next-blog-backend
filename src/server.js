@@ -12,6 +12,10 @@ const { allRoutes } = require("./routes/router");
 const SwaggerConfig = require("./config/swagger.config")
 // cookie parser
 const cookieParser = require('cookie-parser')
+// path
+const path = require('path')
+// serv index
+const serveIndex = require("serve-index");
 // config env files on application
 dotenv.config();
 
@@ -23,10 +27,10 @@ class Application {
     constructor() {
         this.createServer();
         this.connectToDB();
-        this.configServer();
         this.initClientSession();
         this.configRoutes();
         this.errorHandling();
+        this.configServer();
     }
     createServer() {
         this.#app.listen(this.#PORT, () =>
@@ -45,6 +49,9 @@ class Application {
         );
         this.#app.use(express.json());
         this.#app.use(express.urlencoded({ extended: true }));
+        this.#app.use("/uploads", express.static(path.join(__dirname, '../uploads')));
+        app.use("/uploads", serveIndex("../uploads", { icons: true }));
+
         SwaggerConfig(this.#app)
     }
     configRoutes() {

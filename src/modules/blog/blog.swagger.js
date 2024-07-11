@@ -99,23 +99,59 @@
  *                  commentId:
  *                      type: string
  */
-
 /**
  * @swagger
  * /api/blog/create-blog:
  *  post:
- *      summary: create new blog
+ *      summary: Create a new blog post
  *      tags:
- *          -   Blog
+ *          - Blog
  *      requestBody:
  *          content:
- *              application/json:
+ *              multipart/form-data:
  *                  schema:
- *                      $ref: '#/components/schemas/CreateBlog'
+ *                      type: object
+ *                      properties:
+ *                          title:
+ *                              type: string
+ *                              description: The title of the blog post
+ *                          readingDuration:
+ *                              type: number
+ *                              description: The estimated reading duration in minutes
+ *                          categoryId:
+ *                              type: string
+ *                              description: The category ID associated with the blog post
+ *                          text:
+ *                              type: string
+ *                              description: The main text content of the blog post
+ *                          tags:
+ *                              type: array
+ *                              items:
+ *                                  type: string
+ *                              description: Tags associated with the blog post
+ *                          file:
+ *                              type: string
+ *                              format: binary
+ *                              description: The file image for the blog post (must be a valid image file)
  *      responses:
- *          201: 
- *              description: created
+ *          201:
+ *              description: Blog created successfully
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/CreateBlog'
+ *          400:
+ *              description: Bad Request
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              message:
+ *                                  type: string
+ *                                  example: One or more fields are missing or invalid
  */
+
 /**
  * @swagger
  * /api/blog/like-blog:
