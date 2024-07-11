@@ -42,6 +42,14 @@
  *                      type: string
  *                  comment:
  *                      type: string
+ *          LikeBlog:
+ *              type: object
+ *              required:
+ *                  -   blogId
+ *                  -   icon
+ *              properties:
+ *                  blogId:
+ *                      type: string
  *          ReplyComment:
  *              type: object
  *              required:
@@ -84,6 +92,22 @@
  *      responses:
  *          201: 
  *              description: created
+ */
+/**
+ * @swagger
+ * /api/blog/like-blog:
+ *  post:
+ *      summary: like or unlike blog
+ *      tags:
+ *          -   Blog
+ *      requestBody:
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      $ref: '#/components/schemas/LikeBlog'
+ *      responses:
+ *          201: 
+ *              description: likeed or unliked
  */
 /**
  * @swagger

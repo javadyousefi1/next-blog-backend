@@ -97,6 +97,7 @@ class BlogController extends Controller {
     async replyComment(req, res, next) {
         try {
             const { blogId, commentId, reply } = req.body
+            await this.isBLogidAlreadyExistsById(blogId, next)
 
             const repltObject = { userId: req.user._id, replyText: reply, isChecked: true }
 
@@ -116,6 +117,7 @@ class BlogController extends Controller {
     async verifyComment(req, res, next) {
         try {
             const { blogId, commentId } = req.body
+            await this.isBLogidAlreadyExistsById(blogId, next)
             await this.#model.updateOne(
                 { _id: blogId, 'comments._id': commentId },
                 { $set: { 'comments.$.isChecked': true } }
@@ -129,6 +131,38 @@ class BlogController extends Controller {
         }
     }
 
+    // like
+    async likeBLog(req, res, next) {
+        try {
+            const userId = req.user._id;
+            const { blogId } = req.body;
+
+            await this.isBLogidAlreadyExistsById(blogId, next)
+
+            const blog = await this.#model.findById(blogId).select('+likes');
+            const hasLiked = blog.likes.includes(userId);
+
+
+            if (hasLiked) {
+                // Remove the user's ID from the likes array
+                await this.#model.findByIdAndUpdate(blogId, { $pull: { likes: userId } });
+                res.status(200).json({
+                    statusCode: res.statusCode,
+                    message: 'Unlike successful'
+                })
+            } else {
+                // Add the user's ID to the likes array
+                await this.#model.findByIdAndUpdate(blogId, { $push: { likes: userId } });
+                res.status(200).json({
+                    statusCode: res.statusCode,
+                    message: "Like successful"
+                })
+            }
+
+        } catch (error) {
+            next(error)
+        }
+    }
 }
 
 
