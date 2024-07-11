@@ -83,7 +83,7 @@ class BlogController extends Controller {
         try {
             const { blogId, comment } = req.body
             await this.isBLogidAlreadyExistsById(blogId, next)
-            const updateBlogComment = await this.#model.updateOne({ _id: blogId }, { $push: { comments: { comment: comment, _id: new mongoose.Types.ObjectId(), isChecked: false } } })
+            const updateBlogComment = await this.#model.updateOne({ _id: blogId }, { $push: { comments: { comment: comment, _id: new mongoose.Types.ObjectId(), isChecked: false, reply: null } } })
             res.status(200).json({
                 statusCode: res.statusCode,
                 message: "blog added successfully !"
@@ -92,6 +92,25 @@ class BlogController extends Controller {
             next(error)
         }
     }
+
+    async replyComment(req, res, next) {
+        try {
+            const { blogId, commentId, reply } = req.body
+            const result = await Post.updateOne(
+                { _id: blogId, 'comments._id': commentId },
+                { $set: { 'comments.$.reply': reply } }
+            );
+            // await this.isBLogidAlreadyExistsById(blogId, next)
+            // const updateBlogComment = await this.#model.updateOne({ _id: blogId }, { $push: { comments: { comment: comment, _id: new mongoose.Types.ObjectId(), isChecked: false } } })
+            // res.status(200).json({
+            //     statusCode: res.statusCode,
+            //     message: "blog added successfully !"
+            // })
+        } catch (error) {
+            next(error)
+        }
+    }
+
 
 
 }

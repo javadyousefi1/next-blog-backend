@@ -7,7 +7,12 @@ const blogSchema = new Schema({
     readingDuration: { type: Number, required: true, trim: true },
     tags: { type: [String], required: true, trim: true },
     likes: { type: [String], required: false, trim: true, default: [] },
-    comments: { type: [Object], required: false, default: [] }
+    comments: [{
+        comment: String,
+        _id: Schema.Types.ObjectId,
+        isChecked: Boolean,
+        reply: String // Add this line to define the reply field in your schema
+    }]
 }, { timestamps: true, versionKey: false })
 
 const blogModel = model("blog", blogSchema)
