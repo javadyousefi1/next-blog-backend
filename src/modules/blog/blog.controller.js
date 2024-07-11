@@ -82,8 +82,9 @@ class BlogController extends Controller {
     async addComment(req, res, next) {
         try {
             const { blogId, comment } = req.body
+            const commentObject = { comment: comment, _id: new mongoose.Types.ObjectId(), isChecked: false, reply: null, name: req.user.name, email: req.user.email }
             await this.isBLogidAlreadyExistsById(blogId, next)
-            const updateBlogComment = await this.#model.updateOne({ _id: blogId }, { $push: { comments: { comment: comment, _id: new mongoose.Types.ObjectId(), isChecked: false, reply: null } } })
+            const updateBlogComment = await this.#model.updateOne({ _id: blogId }, { $push: { comments: commentObject } })
             res.status(200).json({
                 statusCode: res.statusCode,
                 message: "comment added successfully !"
@@ -96,9 +97,12 @@ class BlogController extends Controller {
     async replyComment(req, res, next) {
         try {
             const { blogId, commentId, reply } = req.body
+
+            const repltObject = { userId: req.user._id, replyText: reply, isChecked: true }
+
             await this.#model.updateOne(
                 { _id: blogId, 'comments._id': commentId },
-                { $set: { 'comments.$.reply': reply } }
+                { $set: { 'comments.$.reply': repltObject } }
             );
             res.status(200).json({
                 statusCode: res.statusCode,

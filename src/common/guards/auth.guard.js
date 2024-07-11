@@ -35,6 +35,7 @@ async function checkIsAdmin(req, res, next) {
         if ("email" in tokenData) {
             const userData = await userModel.findOne({ email: tokenData.email })
             if (userData.role !== "admin") throw new createError.Unauthorized("you are not allowed to access this route");
+            req.user = userData
             return next()
         }
         throw new createError.Unauthorized("isAdmin authporized failed !")

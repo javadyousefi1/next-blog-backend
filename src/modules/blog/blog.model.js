@@ -8,10 +8,16 @@ const blogSchema = new Schema({
     tags: { type: [String], required: true, trim: true },
     likes: { type: [String], required: false, trim: true, default: [] },
     comments: [{
+        name: String,
+        email: String,
         comment: String,
         _id: Schema.Types.ObjectId,
         isChecked: Boolean,
-        reply: String // Add this line to define the reply field in your schema
+        reply: {
+            userId: Schema.Types.ObjectId,
+            replyText: String,
+            isChecked: Boolean
+        }
     }]
 }, { timestamps: true, versionKey: false })
 
