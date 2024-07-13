@@ -6,7 +6,10 @@ const Controller = require('../../common/controllers/controller')
 const { blogModel } = require('./blog.model')
 // error handling
 const createError = require("http-errors");
-
+// fs
+const fs = require('fs');
+// path
+const path = require('path');
 class BlogController extends Controller {
 
     #model
@@ -42,6 +45,7 @@ class BlogController extends Controller {
                 data: newBlogCreated
             })
         } catch (error) {
+            await fs.unlinkSync(path.join(__dirname, `../../../uploads/${req.fileName}`));
             next(error)
         }
     }
