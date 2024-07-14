@@ -6,7 +6,7 @@ const blogSchema = new Schema({
     categoryId: { type: Schema.Types.ObjectId, ref: "category", required: true, trim: true },
     image: { type: String, required: true, trim: true },
     readingDuration: { type: Number, required: true, trim: true },
-    tags: { type: [String], required: true, trim: true },
+    tags: [{ type: Schema.Types.ObjectId, ref: "tag" }],
     likes: { type: [String], required: false, trim: true, default: [] },
     comments: [{
         name: String,

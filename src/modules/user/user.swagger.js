@@ -82,7 +82,7 @@
  * @swagger
  * /api/user/add-admin-role:
  *  post:
- *      summary: login user
+ *      summary: add admin role to user
  *      tags:
  *          -   User
  *      requestBody:
@@ -98,7 +98,7 @@
  * @swagger
  * /api/user/add-user-role:
  *  post:
- *      summary: login user
+ *      summary: add normal role to user
  *      tags:
  *          -   User
  *      requestBody:

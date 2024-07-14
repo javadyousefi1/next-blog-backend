@@ -1,6 +1,7 @@
 const { default: mongoose, isValidObjectId } = require('mongoose');
 // controllers
 const { CategoryController } = require("../category/category.controller.js")
+const { TagController } = require("../tag/tag.controller.js")
 const Controller = require('../../common/controllers/controller')
 // model
 const { blogModel } = require('./blog.model')
@@ -14,15 +15,22 @@ class BlogController extends Controller {
 
     #model
     #CategoryController
+    #TagController
     constructor() {
         super()
         this.#model = blogModel
         this.#CategoryController = CategoryController
+        this.#TagController = TagController
     }
 
     async addNewBlog(req, res, next) {
         try {
             const { title, text, categoryId, tags, readingDuration, } = req.body;
+
+            const tagList = [... new Set(tags.split(","))]
+
+            // check all tags valid
+            await this.#TagController.isTagListValid(tagList, next)
 
             if (!req.file) {
                 throw new createError.BadRequest('A file is required for this operation')
