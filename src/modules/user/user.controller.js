@@ -10,6 +10,7 @@ const NodeEnv = require('../../common/constants/env.enum');
 const CookieEnv = require('../../common/constants/cookies.enum');
 // jwt
 const jwt = require("jsonwebtoken");
+const { isValidObjectId } = require('mongoose');
 
 class UserController extends Controller {
     #model
@@ -103,7 +104,7 @@ class UserController extends Controller {
 
     async deleteUser(req, res, next) {
         const { id } = req.query;
-        if (!id) throw new createError.BadRequest("you dont sent user id !")
+        await this.isUserAlreadyExsits(id, next)
         try {
             const user = await this.#model.deleteOne({ _id: id });
             res.status(200).json({
@@ -125,7 +126,48 @@ class UserController extends Controller {
         } catch (error) {
             next(error)
         }
+    }
 
+
+
+    async isUserAlreadyExsits(id, next = () => { }) {
+        try {
+            if (!isValidObjectId(id)) throw new createError.BadRequest("your user id is not valid")
+            const foundUser = await this.#model.countDocuments({ _id: id })
+            if (!foundUser) throw new createError.NotFound("not found a user with this id !")
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    async addAdminRoleToUser(req, res, next) {
+        try {
+            const { userId } = req.body;
+            await this.isUserAlreadyExsits(userId, next)
+            const updateResult = await this.#model.updateOne({ _id: userId }, { role: 'admin' })
+            if (updateResult.modifiedCount !== 1) throw new createError.BadRequest("update user role failed")
+            res.status(200).json({
+                statusCode: res.statusCode,
+                message: "user role updated successfully"
+            })
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    async addUserRoleToUser(req, res, next) {
+        try {
+            const { userId } = req.body;
+            await this.isUserAlreadyExsits(userId, next)
+            const updateResult = await this.#model.updateOne({ _id: userId }, { role: 'user' })
+            if (updateResult.modifiedCount !== 1) throw new createError.BadRequest("update user role failed")
+            res.status(200).json({
+                statusCode: res.statusCode,
+                message: "user role updated successfully"
+            })
+        } catch (error) {
+            next(error)
+        }
     }
 
 }

@@ -34,6 +34,14 @@
  *                      type: string
  *                  password:
  *                      type: string
+ *          AddAdminRole:
+ *              type: object
+ *              required:
+ *                  -   userId
+ *                  -   icon
+ *              properties:
+ *                  userId:
+ *                      type: string
  * 
  */
 
@@ -69,6 +77,38 @@
  *      responses:
  *          200: 
  *              description: login succsefully
+ */
+/**
+ * @swagger
+ * /api/user/add-admin-role:
+ *  post:
+ *      summary: login user
+ *      tags:
+ *          -   User
+ *      requestBody:
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      $ref: '#/components/schemas/AddAdminRole'
+ *      responses:
+ *          200: 
+ *              description: login succsefully
+ */
+/**
+ * @swagger
+ * /api/user/add-user-role:
+ *  post:
+ *      summary: login user
+ *      tags:
+ *          -   User
+ *      requestBody:
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      $ref: '#/components/schemas/AddAdminRole'
+ *      responses:
+ *          200: 
+ *              description: add user role
  */
 
 /**
