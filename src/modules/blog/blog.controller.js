@@ -60,7 +60,10 @@ class BlogController extends Controller {
 
     async getAllBlogs(req, res, next) {
         try {
-            const blogs = await this.#model.find({}).populate('categoryId', 'title');;
+            const blogs = await this.#model.find({}).populate([
+                { path: 'categoryId', select: 'title -_id' }, // Include only the 'title' of the category
+                { path: 'tags', select: 'title _id' } // Include only the 'title' of each tag
+            ]);
             res.status(200).json({
                 statusCode: res.statusCode,
                 message: "all blog resived successfully",
