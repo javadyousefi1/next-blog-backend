@@ -27,7 +27,7 @@ class BlogController extends Controller {
         try {
             const { title, text, categoryId, tags, readingDuration, } = req.body;
 
-            const tagList = [... new Set(tags.split(","))]
+            const tagList = tags ? [... new Set(tags?.split(","))] : []
 
             if (!req.file) {
                 throw new createError.BadRequest('A file is required for this operation')
@@ -79,9 +79,16 @@ class BlogController extends Controller {
     async deleteBlog(req, res, next) {
         const { id } = req.query;
         if (!id) next(createError.BadRequest("you dont sent id !"))
-        await this.isBLogidAlreadyExistsById(id, next)
+        const willBeDeletedBlog = await this.isBLogidAlreadyExistsById(id, next)
         try {
             const blogs = await this.#model.deleteOne({ _id: id });
+            // delete image
+            const blogImageName = willBeDeletedBlog?.image.split("/").at(-1)
+            let imagePath = path.join(__dirname, `../../../uploads/${blogImageName}`)
+            if (fs.existsSync(imagePath)) {
+                await fs.unlinkSync(imagePath);
+            }
+
             res.status(200).json({
                 statusCode: res.statusCode,
                 message: "blog deleted successfully",
@@ -96,8 +103,12 @@ class BlogController extends Controller {
     async isBLogidAlreadyExistsById(id, next = () => { }) {
         try {
             if (!isValidObjectId(id)) throw new createError.BadRequest("your id is not valid")
-            const foundBlog = await this.#model.countDocuments({ _id: id })
-            if (!foundBlog) throw new createError.NotFound("not found a blog with this id !")
+            const foundBlog = await this.#model.findOne({ _id: id })
+            if (!foundBlog) {
+                throw new createError.NotFound("not found a blog with this id !")
+            } else {
+                return foundBlog
+            }
         } catch (error) {
             next(error)
         }
