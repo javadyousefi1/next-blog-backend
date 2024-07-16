@@ -29,9 +29,6 @@ class BlogController extends Controller {
 
             const tagList = [... new Set(tags.split(","))]
 
-            // check all tags valid
-            await this.#TagController.isTagListValid(tagList, next)
-
             if (!req.file) {
                 throw new createError.BadRequest('A file is required for this operation')
             }
@@ -42,6 +39,8 @@ class BlogController extends Controller {
             const newBlog = { text, title, categoryId, tags, readingDuration, image: fileUrl };
             // check category id is valid or not
             await this.#CategoryController.isCategoryidAlreadyExistsById(categoryId, next)
+            // check all tags valid
+            await this.#TagController.isTagListValid(tagList, next)
             // prevent dublicate blogs
             const alreadyExsitWithThisTitle = await this.#model.countDocuments({ title })
             if (alreadyExsitWithThisTitle !== 0) throw new createError.BadRequest("blog already exists with this title")
@@ -53,7 +52,10 @@ class BlogController extends Controller {
                 data: newBlogCreated
             })
         } catch (error) {
-            await fs.unlinkSync(path.join(__dirname, `../../../uploads/${req.fileName}`));
+            let imagePath = path.join(__dirname, `../../../uploads/${req.fileName}`)
+            if (fs.existsSync(imagePath)) {
+                await fs.unlinkSync(imagePath);
+            }
             next(error)
         }
     }
