@@ -99,6 +99,7 @@
  *                  commentId:
  *                      type: string
  */
+
 /**
  * @swagger
  * /api/blog/create-blog:
@@ -136,20 +137,6 @@
  *      responses:
  *          201:
  *              description: Blog created successfully
- *              content:
- *                  application/json:
- *                      schema:
- *                          $ref: '#/components/schemas/CreateBlog'
- *          400:
- *              description: Bad Request
- *              content:
- *                  application/json:
- *                      schema:
- *                          type: object
- *                          properties:
- *                              message:
- *                                  type: string
- *                                  example: One or more fields are missing or invalid
  */
 
 /**

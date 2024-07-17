@@ -35,7 +35,6 @@ class BlogController extends Controller {
 
             const fileUrl = `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`;
 
-
             const newBlog = { text, title, categoryId, tags, readingDuration, image: fileUrl };
             // check category id is valid or not
             await this.#CategoryController.isCategoryidAlreadyExistsById(categoryId, next)

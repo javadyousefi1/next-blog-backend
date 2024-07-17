@@ -41,21 +41,30 @@
  *                      type: string
  */
 
+
 /**
  * @swagger
  * /api/category/create-category:
  *  post:
- *      summary: create new category
+ *      summary: Create a new blog post
  *      tags:
- *          -   Category
+ *          - Category
  *      requestBody:
  *          content:
- *              application/json:
+ *              multipart/form-data:
  *                  schema:
- *                      $ref: '#/components/schemas/CreateCategory'
+ *                      type: object
+ *                      properties:
+ *                          title:
+ *                              type: string
+ *                              description: The title of the blog post
+ *                          file:
+ *                              type: string
+ *                              format: binary
+ *                              description: The file image for the blog post (must be a valid image file)
  *      responses:
- *          201: 
- *              description: created
+ *          201:
+ *              description: Blog created successfully
  */
 /**
  * @swagger

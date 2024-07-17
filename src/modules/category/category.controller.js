@@ -4,7 +4,9 @@ const Controller = require('../../common/controllers/controller')
 const { categoryModel } = require('./category.model')
 // error handling
 const createError = require("http-errors");
-
+// path
+const path = require('path');
+const fs = require('fs');
 class CategoryController extends Controller {
     #model
     constructor() {
@@ -15,11 +17,14 @@ class CategoryController extends Controller {
     async addNewCategory(req, res, next) {
         try {
             // get data from body
-            const { title, svgIcon } = req.body;
-            const newCategory = { title, svgIcon };
+            const { title, image } = req.body;
+            // fileUrl
+            const fileUrl = `${req.protocol}://${req.get("host")}/uploads/${req?.file?.filename}`;
+            const newCategory = { title, image: fileUrl };
+
             // check dublicate
-            const isAlreadyExist = await this.#model.countDocuments({ title: title.trim(), svgIcon })
-            if (isAlreadyExist) throw new createError.BadRequest("this category already exists !")
+            const isAlreadyExist = await this.#model.countDocuments({ title: title.trim() })
+            if (isAlreadyExist) return res.status(400).json({ statusCode: res.statusCode, message: "this category already exists !" })
             // insert new category to DB
             const newCategoryCreated = await this.#model.create(newCategory);
             res.status(200).json({
@@ -28,6 +33,10 @@ class CategoryController extends Controller {
                 data: newCategoryCreated
             })
         } catch (error) {
+            let imagePath = path.join(__dirname, `../../../uploads/${req.fileName}`)
+            if (fs.existsSync(imagePath)) {
+                await fs.unlinkSync(imagePath);
+            }
             next(error)
         }
     }
