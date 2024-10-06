@@ -1,0 +1,1 @@
+const list = [{"src":"1728216853235.png","isActive":true},{"src":"1728220783452.png","isActive":true},{"src":"1728220930181.png","isActive":true},{"src":"1728220960310.png","isActive":false}]

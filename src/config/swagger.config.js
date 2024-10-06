@@ -6,15 +6,15 @@ function SwaggerConfig(app) {
         swaggerDefinition: {
             openapi: "3.0.1",
             info: {
-                title: "next-blog-backend",
-                description: "my personal blog website backend",
+                title: "slider-backend",
+                description: "webservice for controlling slider",
                 version: "1.0.0",
             },
         },
         apis: [process.cwd() + "/src/modules/**/*.swagger.js"],
 
     });
-    const swagger = swaggerUi.setup(swaggerDocument, { });
+    const swagger = swaggerUi.setup(swaggerDocument, {});
     app.use("/swagger", swaggerUi.serve, swagger);
 }
 module.exports = SwaggerConfig;

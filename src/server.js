@@ -26,7 +26,7 @@ class Application {
 
     constructor() {
         this.createServer();
-        this.connectToDB();
+        // this.connectToDB();
         this.initClientSession();
         this.configServer();
     }
